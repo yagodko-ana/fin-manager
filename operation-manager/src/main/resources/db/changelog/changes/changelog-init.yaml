@@ -1,0 +1,93 @@
+databaseChangeLog:
+  - changeSet:
+      id: "20240507-1"
+      author: "yagodko-ana"
+      changes:
+        - createTable:
+            tableName: category
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: category_type
+                  type: VARCHAR(255)
+              - column:
+                  name: account_id
+                  type: UUID
+                  constraints:
+                    nullable: true
+        - createTable:
+            tableName: category_entry
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: balance
+                  type: NUMERIC(19, 2)
+              - column:
+                  name: fact_limit
+                  type: NUMERIC(19, 2)
+              - column:
+                  name: plan_limit
+                  type: NUMERIC(19, 2)
+              - column:
+                  name: date_begin
+                  type: TIMESTAMP
+              - column:
+                  name: date_end
+                  type: TIMESTAMP
+              - column:
+                  name: category_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: transaction
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: date
+                  type: TIMESTAMP
+              - column:
+                  name: amount
+                  type: NUMERIC(19, 2)
+              - column:
+                  name: transaction_type
+                  type: VARCHAR(255)
+              - column:
+                  name: category_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: category_entry
+            baseColumnNames: [category_id]
+            constraintName: fk_category_entry_category
+            referencedTableName: category
+            referencedColumnNames: [id]
+            onDelete: CASCADE
+            onUpdate: CASCADE
+        - addForeignKeyConstraint:
+            baseTableName: transaction
+            baseColumnNames: [category_id]
+            constraintName: fk_transaction_category
+            referencedTableName: category
+            referencedColumnNames: [id]
+            onDelete: CASCADE
+            onUpdate: CASCADE
