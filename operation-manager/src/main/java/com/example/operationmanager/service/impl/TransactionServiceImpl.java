@@ -28,7 +28,7 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setCategory(category);
 
         transactionRepository.saveAndFlush(transaction);
-        //TODO: пересчитывать балансы, поставить аннотацию @Transaction на весь метод
+        //TODO: пересчитывать баланс в категории, поставить аннотацию @Transaction на весь метод
 
         return commonMapper.map(transaction);
     }
